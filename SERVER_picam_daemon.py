@@ -21,9 +21,9 @@ def handle(clientsocket):
 	while 1:
 		i=1
 		buf = clientsocket.recv(MAX_LENGTH)
-		while os.path.exists('/opt/nfs/CAM1_Im%s.jpg' % i):
+		while os.path.exists('/opt/nfs/Pics/CAM1_Im%s.jpg' % i):
                         i+=1
-		fileName='/opt/nfs/CAM1_Im%s.jpg' % i
+		fileName='/opt/nfs/Pics/CAM1_Im%s.jpg' % i
 		# Receive the SNAP command. Take a picture with PiCam.
 		if buf == 'snap':
 			start = time.time()
@@ -42,7 +42,7 @@ def handle(clientsocket):
 while 1:
 	# setup camera
 	camera = picamera.PiCamera()
-	camera.resolution = (640, 480)
+	camera.resolution = (1920, 1080)
 	#camera.zoom = (0.2, 0.2, 1.0, 1.0)
 	camera.exposure_mode = 'sports'
 	print('Camera server running')
