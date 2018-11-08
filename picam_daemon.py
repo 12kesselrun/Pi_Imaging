@@ -3,11 +3,9 @@ import os, io, base64, time, socket, picamera, daemon
 import daemon.runner
 import argparse
 
-
 parser=argparse.ArgumentParser(description='Retrieve Camera ID Number')
 parser.add_argument('-c','--camera_ID',help='Camera ID Number')
 args=parser.parse_args()
-
 
 MAX_LENGTH = 50 # max length of any possible entry from "client"
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # setup socket
@@ -30,11 +28,13 @@ def handle(clientsocket):
 		fileName='/opt/nfs/Pics/CAM%s_Im%s.jpg' % (args.camera_ID,i)
 		# Receive the SNAP command. Take a picture with PiCam.
 		if buf == 'snap':
+                        camera.stop_preview()
 			start = time.time()
 			camera.capture(fileName)
 			finish = start - time.time()
 			print finish
 			print 'Picture Taken!'
+			camera.start_preview()
 			
 		if buf == 'ack':
 			print 'Ping: Hello!'
@@ -47,6 +47,7 @@ while 1:
 	# setup camera
 	camera = picamera.PiCamera()
 	camera.resolution = (1920, 1080)
+	camera.start_preview()
 	#camera.zoom = (0.2, 0.2, 1.0, 1.0)
 	camera.exposure_mode = 'sports'
 	print('Camera server running')
